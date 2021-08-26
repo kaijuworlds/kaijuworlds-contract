@@ -8,13 +8,6 @@ const Factory = artifacts.require("Factory");
 
 const { deployProxy } = require('@openzeppelin/truffle-upgrades');
 module.exports = async function (deployer,network) {
-    // var oldRouter = null;
-    // try {
-    //     oldRouter = await KaijuRouter.deployed();
-    // } catch (err) {
-
-    // }
-    // const mainToken = KaijuToken.address;
     var databaseInstance = await KaijuDatabase.deployed();
 
     var tokenAddress = "";
@@ -27,22 +20,10 @@ module.exports = async function (deployer,network) {
     await deployProxy(KaijuRouter, [tokenAddress, KaijuDatabase.address], {deployer});
     var kaijuRouter = await KaijuRouter.deployed();
 
-    // await kaijuToken.approve(kaijuRouter.address, "0xffffffffffffffffffffffffffffffff");
-
     var eggInstance = await Eggs.deployed();
     var databaseInstance = await KaijuDatabase.deployed();
     await eggInstance.grantRouter(KaijuRouter.address);
 
-
-    // await databaseInstance.transferRouter(KaijuRouter.address);
-
-    // try {
-    //     var factory = await Factory.deployed();
-    //     await kaijuRouter.setFactory(factory.address);
-    // }
-    // catch (err) {
-
-    // }
    
     await kaijuRouter.setStakingContractAddress("0x0CFa0e0603fCA9D0699B93AC9E1fAAa070cb8b7C");
 };
